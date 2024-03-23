@@ -1,0 +1,60 @@
+[gd_scene load_steps=10 format=3 uid="uid://cw4yblk6t6ldm"]
+
+[ext_resource type="Script" path="res://Scripts/Player/Grenades/molotov_spread.gd" id="1_rw54c"]
+[ext_resource type="Material" uid="uid://cks8gyf6wejbm" path="res://Assets/Materials/stardart_particle_VFX.tres" id="2_gnsjc"]
+
+[sub_resource type="Gradient" id="Gradient_lxd1c"]
+offsets = PackedFloat32Array(0.426829, 1)
+colors = PackedColorArray(1, 0, 0, 1, 1, 0.781, 0, 1)
+
+[sub_resource type="GradientTexture1D" id="GradientTexture1D_43csk"]
+gradient = SubResource("Gradient_lxd1c")
+
+[sub_resource type="Curve" id="Curve_eyjvi"]
+_data = [Vector2(0, 1), 0.0, 0.0, 0, 0, Vector2(0.549505, 0.818868), -2.74415, -2.74415, 0, 0, Vector2(1, 0.0490566), 0.0, 0.0, 0, 0]
+point_count = 3
+
+[sub_resource type="CurveTexture" id="CurveTexture_j4822"]
+curve = SubResource("Curve_eyjvi")
+
+[sub_resource type="ParticleProcessMaterial" id="ParticleProcessMaterial_pkovg"]
+emission_shape = 1
+emission_sphere_radius = 1.5
+gravity = Vector3(0, 4, 0)
+scale_min = 0.1
+scale_max = 0.3
+scale_curve = SubResource("CurveTexture_j4822")
+color_ramp = SubResource("GradientTexture1D_43csk")
+
+[sub_resource type="QuadMesh" id="QuadMesh_iwwb8"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ec0ig"]
+radius = 1.5
+
+[node name="molotov_fire" type="Node3D"]
+script = ExtResource("1_rw54c")
+
+[node name="fire_sparkle" type="GPUParticles3D" parent="."]
+material_override = ExtResource("2_gnsjc")
+amount = 350
+lifetime = 0.5
+speed_scale = 0.7
+process_material = SubResource("ParticleProcessMaterial_pkovg")
+draw_pass_1 = SubResource("QuadMesh_iwwb8")
+
+[node name="Damage_area" type="Area3D" parent="fire_sparkle"]
+collision_layer = 8
+collision_mask = 18
+
+[node name="damage_box" type="CollisionShape3D" parent="fire_sparkle/Damage_area"]
+shape = SubResource("SphereShape3D_ec0ig")
+
+[node name="CheckRay" type="RayCast3D" parent="."]
+target_position = Vector3(0, -6, 0)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 8.0
+one_shot = true
+autostart = true
+
+[connection signal="area_entered" from="fire_sparkle/Damage_area" to="." method="check_smoke_area"]

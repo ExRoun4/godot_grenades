@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://ckxfxalpsxps0"]
+
+[ext_resource type="Script" path="res://Scripts/VFX/smoke.gd" id="2_evh1p"]
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_oawq8"]
+radius = 8.0
+
+[node name="FogVolume" type="FogVolume"]
+size = Vector3(15, 15, 15)
+shape = 0
+script = ExtResource("2_evh1p")
+
+[node name="FogArea" type="Area3D" parent="."]
+collision_layer = 16
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="FogArea"]
+shape = SubResource("SphereShape3D_oawq8")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 15.0
+one_shot = true
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="disperse_smoke"]

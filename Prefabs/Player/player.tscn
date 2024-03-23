@@ -1,0 +1,140 @@
+[gd_scene load_steps=9 format=3 uid="uid://bw3msnmwldf5y"]
+
+[ext_resource type="Script" path="res://Scripts/Player/player_movement.gd" id="1_7uwnl"]
+[ext_resource type="Script" path="res://Scripts/Player/player_events.gd" id="2_21uw3"]
+[ext_resource type="Script" path="res://Scripts/Player/Grenades/armory_hud.gd" id="3_2c6of"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_nog7j"]
+height = 2.5
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_mndij"]
+height = 2.5
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c4gou"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_qo10s"]
+material = SubResource("StandardMaterial3D_c4gou")
+radius = 0.1
+height = 0.5
+
+[sub_resource type="ViewportTexture" id="ViewportTexture_mkq5r"]
+viewport_path = NodePath("HUD_viewport")
+
+[node name="player" type="CharacterBody3D"]
+collision_layer = 2
+script = ExtResource("1_7uwnl")
+
+[node name="event_listener" type="Node3D" parent="."]
+script = ExtResource("2_21uw3")
+
+[node name="model" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_nog7j")
+
+[node name="collider" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_mndij")
+
+[node name="camera" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.902178, 0)
+cull_mask = 1048573
+current = true
+
+[node name="HUD" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.902029, 0)
+top_level = true
+script = ExtResource("3_2c6of")
+
+[node name="flash_grenade" type="Node3D" parent="HUD"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HUD/flash_grenade"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.673424, -0.511351, -0.76874)
+layers = 2
+mesh = SubResource("CapsuleMesh_qo10s")
+
+[node name="HE_grenade" type="Node3D" parent="HUD"]
+visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HUD/HE_grenade"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.673424, -0.511351, -0.76874)
+layers = 2
+mesh = SubResource("CapsuleMesh_qo10s")
+
+[node name="smoke_grenade" type="Node3D" parent="HUD"]
+visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HUD/smoke_grenade"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.673424, -0.511351, -0.76874)
+layers = 2
+mesh = SubResource("CapsuleMesh_qo10s")
+
+[node name="molotov_grenade" type="Node3D" parent="HUD"]
+visible = false
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="HUD/molotov_grenade"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.673424, -0.511351, -0.76874)
+layers = 2
+mesh = SubResource("CapsuleMesh_qo10s")
+
+[node name="HUD_viewport" type="SubViewport" parent="."]
+transparent_bg = true
+size = Vector2i(1280, 720)
+
+[node name="HUD_camera" type="Camera3D" parent="HUD_viewport"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.658717, 0)
+top_level = true
+cull_mask = 2
+current = true
+
+[node name="Canvas" type="CanvasLayer" parent="."]
+
+[node name="HUD" type="Control" parent="Canvas"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="crosshair" type="Label" parent="Canvas/HUD"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -17.0
+offset_right = 20.0
+offset_bottom = 17.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_colors/font_color = Color(0, 0, 0, 1)
+theme_override_font_sizes/font_size = 24
+text = "+"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="choosed_hud" type="Label" parent="Canvas/HUD"]
+layout_mode = 1
+offset_right = 40.0
+offset_bottom = 23.0
+theme_override_font_sizes/font_size = 23
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="CameraHud" type="TextureRect" parent="Canvas/HUD"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("ViewportTexture_mkq5r")
+
+[node name="flash_screen" type="ColorRect" parent="Canvas"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2

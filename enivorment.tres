@@ -1,0 +1,13 @@
+[gd_resource type="Environment" load_steps=3 format=3 uid="uid://dpa2moef5y6ga"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_uj1us"]
+
+[sub_resource type="Sky" id="Sky_xyx7l"]
+sky_material = SubResource("ProceduralSkyMaterial_uj1us")
+
+[resource]
+background_mode = 2
+sky = SubResource("Sky_xyx7l")
+glow_enabled = true
+volumetric_fog_enabled = true
+volumetric_fog_density = 0.0

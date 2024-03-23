@@ -1,0 +1,34 @@
+[gd_scene load_steps=6 format=3 uid="uid://dm88bvcgogkgb"]
+
+[ext_resource type="Script" path="res://Scripts/Player/GrenadeRoot.gd" id="1_mawya"]
+
+[sub_resource type="PhysicsMaterial" id="PhysicsMaterial_3de74"]
+friction = 0.5
+bounce = 0.8
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_ijdxt"]
+radius = 0.4
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_t3hyv"]
+albedo_color = Color(0, 0, 0, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_rrre7"]
+material = SubResource("StandardMaterial3D_t3hyv")
+radius = 0.1
+height = 0.5
+
+[node name="GrenadeRoot" type="RigidBody3D"]
+collision_layer = 4
+physics_material_override = SubResource("PhysicsMaterial_3de74")
+script = ExtResource("1_mawya")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("SphereShape3D_ijdxt")
+
+[node name="VisibilityCheck" type="VisibleOnScreenNotifier3D" parent="."]
+
+[node name="GrenadeTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_rrre7")
